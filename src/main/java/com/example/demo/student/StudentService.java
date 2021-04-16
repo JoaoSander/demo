@@ -24,14 +24,9 @@ public class StudentService {
     }
 
     public void addNewStudent(Student student) {
-        Optional<Student> StudentOptionalEmail = studentRepository.findStudentByEmail(student.getEmail());
-        Optional<Student> StudentOptionalCPF = studentRepository.findStudentByCPF(student.getCPF());
-        if(StudentOptionalEmail.isPresent() || StudentOptionalCPF.isPresent()) {
-            if(StudentOptionalEmail.isPresent()) {
-                throw new IllegalStateException("Email: " +student.getEmail()+ " taken");
-            } else {
-                throw new IllegalStateException("CPF: " +student.getCPF()+ " already in use");
-            }
+        Optional<Student> existsByEmail = studentRepository.findStudentByEmail(student.getEmail());
+        if(existsByEmail.isPresent()) {
+            throw new IllegalStateException("Email: " +student.getEmail()+ " taken");
         }
         studentRepository.save(student);
     }
@@ -52,10 +47,14 @@ public class StudentService {
 
         if (name != null && name.length()>0 && !Objects.equals(student.getName(), name)) {
             student.setName(name);
+        } else {
+            throw new IllegalStateException("Nome invalido ou igual ao atual");
         }
 
         if (email != null && email.length()>0 && !Objects.equals(student.getEmail(), email)) {
             student.setEmail(email);
+        } else {
+            throw new IllegalStateException("Email invalido ou igual ao atual");
         }
     }
 }

@@ -47,19 +47,6 @@ class StudentRepositoryTest {
     void CheckIfStudentEmailDoesNotExists() {
 
         //given
-        String email = "joaoFalse@gmail.com";
-
-        //when
-        Optional<Student> expected = underTest.findStudentByEmail(email);
-
-        //then
-        assertThat(expected.isPresent()).isFalse();
-
-    }
-
-    @Test
-    void CheckIfStudentCpfExists() {
-        //given
         Student student = new Student(
                 "Joao",
                 "joao@gmail.com",
@@ -68,23 +55,14 @@ class StudentRepositoryTest {
         );
         underTest.save(student);
 
-        //when
-        Optional<Student> expected = underTest.findStudentByCPF(student.getCPF());
-
-        //then
-        assertThat(expected.isPresent()).isTrue();
-    }
-
-    @Test
-    void CheckIfStudentCpfDoesNotExists() {
-        //given
-        String CPF = "12345678901";
+        String email = "joaoFalse@gmail.com";
 
         //when
-        Optional<Student> expected = underTest.findStudentByCPF(CPF);
+        Optional <Student> expected = underTest.findStudentByEmail(email);
 
         //then
         assertThat(expected.isPresent()).isFalse();
+
     }
 
 }
