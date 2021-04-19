@@ -34,7 +34,7 @@ public class StudentService {
     public void deleteStudent(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);
         if(!exists) {
-            throw new IllegalStateException("Student with id " +studentId+ " does not exists");
+            throw new IllegalStateException("Student with ID " +studentId+ " does not exists");
         }
         studentRepository.deleteById(studentId);
     }
@@ -42,19 +42,24 @@ public class StudentService {
     @Transactional
     public void updateStudent(Long studentId, String name, String email) {
         Student student = studentRepository.findById(studentId).orElseThrow(
-                () -> new IllegalStateException("student with Id " +studentId+ " does not exists")
+                () -> new IllegalStateException("Student with ID " +studentId+ " does not exists")
         );
 
-        if (name != null && name.length()>0 && !Objects.equals(student.getName(), name)) {
+        if (name!=null && name.length()>0) {
             student.setName(name);
         } else {
-            throw new IllegalStateException("Nome invalido ou igual ao atual");
+            throw new IllegalStateException("Nome invalido");
         }
 
-        if (email != null && email.length()>0 && !Objects.equals(student.getEmail(), email)) {
+        if (email != null && email.length() > 0) {
+            Optional<Student> expected = studentRepository.findStudentByEmail(email);
+            if (expected.isPresent()) {
+                throw new IllegalStateException("Email " +email+ " taken");
+            }
             student.setEmail(email);
         } else {
-            throw new IllegalStateException("Email invalido ou igual ao atual");
+            throw new IllegalStateException("Email invalido");
         }
+
     }
 }

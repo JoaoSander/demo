@@ -27,14 +27,12 @@ public class Student {
     private String name;
     private String email;
     private LocalDate dob;
-    private String CPF;
     @Transient
     private Integer age;
 
-    public Student(String name, String email, String CPF,LocalDate dob) {
+    public Student(String name, String email, LocalDate dob) {
         this.name = name;
         this.email = email;
-        this.CPF = CPF;
         this.dob = dob;
     }
 

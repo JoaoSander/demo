@@ -15,7 +15,7 @@ import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static java.time.Month.MAY;
+import static java.time.Month.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -50,7 +50,6 @@ class StudentServiceTest {
         Student student = new Student(
                 "Joao",
                 "joao@gmail.com",
-                "12345678900",
                 LocalDate.of(1999, MAY, 3)
         );
 
@@ -59,11 +58,9 @@ class StudentServiceTest {
 
         //then
         ArgumentCaptor<Student> studentArgumentCaptor = ArgumentCaptor.forClass(Student.class);
-
         verify(studentRepository).save(studentArgumentCaptor.capture());
 
         Student capturedStudent = studentArgumentCaptor.getValue();
-
         assertThat(capturedStudent).isEqualTo(student);
     }
 
@@ -74,50 +71,88 @@ class StudentServiceTest {
         Student student = new Student(
                 "Joao",
                 "joao@gmail.com",
-                "12345678900",
-                LocalDate.of(1999, MAY, 3)
-        );
-        studentRepository.save(student);
-
-        //when  **********ERRO**********
-        given(studentRepository.findStudentByEmail(student.getEmail()).isPresent()).willReturn(true);
-        /*optional nao retorna boolean*/
-
-        //then
-        assertThatThrownBy(() -> underTest.addNewStudent(student))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Email: " +student.getEmail()+ " taken");
-    }
-
-    @Test
-    @Disabled
-    void canDeleteStudent(Long studentId) {
-    }
-
-    @Test
-    void willThrownWhenIdDoesNotExists() {
-
-        //given
-        Student student = new Student(
-                "Joao",
-                "joao@gmail.com",
-                "12345678900",
                 LocalDate.of(1999, MAY, 3)
         );
         studentRepository.save(student);
 
         //when
+        given(studentRepository.findStudentByEmail(student.getEmail())).willReturn(Optional.of(student));
+        given(studentRepository.existsById(student.getId())).willReturn(false);
+        //then
+        assertThatThrownBy(() -> underTest.addNewStudent(student))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Email: " +student.getEmail()+ " taken");
+
+        /*assertThatThrownBy(() -> underTest.updateStudent(student.getId(), student.getName(), student.getEmail()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Email " +student.getEmail()+ " taken");*/
+    }
+
+    @Test
+    void canDeleteStudent() {
+        //given
+        Student student = new Student(
+                "Joao",
+                "joao@gmail.com",
+                LocalDate.of(1999, MAY, 3)
+        );
+        studentRepository.save(student);
+
+        //when
+        given(studentRepository.existsById(student.getId())).willReturn(true);
+        underTest.deleteStudent(student.getId());
+
+        //then
+        verify(studentRepository).deleteById(student.getId());
+    }
+
+    @Test
+    void willThrowWhenIdIsNotFound() {
+        // given
+        Student student = new Student (
+                "Joao",
+                "joao@gmail.com",
+                LocalDate.of(1999, MAY, 3)
+        );
+        studentRepository.save(student);
+
+        // when
         given(studentRepository.existsById(student.getId())).willReturn(false);
 
-        //
+        // then
         assertThatThrownBy(() -> underTest.deleteStudent(student.getId()))
                 .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Student with id " +student.getId()+ " does not exists");
+                .hasMessageContaining("Student with ID " +student.getId()+ " does not exists");
+
+        assertThatThrownBy(() -> underTest.updateStudent(student.getId(), student.getName(), student.getEmail()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Student with ID " +student.getId()+ " does not exists");
 
     }
+
+    /*@Test
+    void willThrownWhenEmailIsNull() {
+        // given
+        Student student = new Student (
+                "Joao",
+                "joao@gmail.com",
+                LocalDate.of(1999, MAY, 3)
+        );
+        studentRepository.save(student);
+
+        // when
+        given(studentRepository.findStudentByEmail(student.getEmail())).willReturn(null);
+
+        assertThatThrownBy(() -> underTest.updateStudent(student.getId(), student.getName(), student.getEmail()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Email invalido");
+    }*/
 
     @Test
     @Disabled
     void canUpdateStudent() {
+
+
     }
+
 }
