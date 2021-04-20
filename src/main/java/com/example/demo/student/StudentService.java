@@ -19,42 +19,48 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> getStudents(){
+    public List<Student> getStudents() {
         return studentRepository.findAll();
     }
 
     public void addNewStudent(Student student) {
         Optional<Student> existsByEmail = studentRepository.findStudentByEmail(student.getEmail());
-        if(existsByEmail.isPresent()) {
-            throw new IllegalStateException("Email: " +student.getEmail()+ " taken");
+        if (existsByEmail.isPresent()) {
+            throw new IllegalStateException("Email: " + student.getEmail() + " taken");
         }
         studentRepository.save(student);
     }
 
     public void deleteStudent(Long studentId) {
         boolean exists = studentRepository.existsById(studentId);
-        if(!exists) {
-            throw new IllegalStateException("Student with ID " +studentId+ " does not exists");
+        if (!exists) {
+            throw new IllegalStateException("Student with ID " + studentId + " does not exists");
         }
         studentRepository.deleteById(studentId);
     }
 
     @Transactional
     public void updateStudent(Long studentId, String name, String email) {
+
         Student student = studentRepository.findById(studentId).orElseThrow(
-                () -> new IllegalStateException("Student with ID " +studentId+ " does not exists")
+                () -> new IllegalStateException("Student with ID " + studentId + " does not exists")
         );
 
         if (name!=null && name.length()>0) {
             student.setName(name);
+        } else {
+            throw new IllegalArgumentException("Nome invalido");
         }
 
-        if (email != null && email.length() > 0) {
+        if (email!=null && email.length()>0) {
             Optional<Student> existsByEmail = studentRepository.findStudentByEmail(email);
             if (existsByEmail.isPresent()) {
-                throw new IllegalStateException("Email: " +email+ " taken");
+                throw new IllegalStateException("Email: " + email + " taken");
+            } else {
+                student.setEmail(email);
             }
-            student.setEmail(email);
+        } else {
+            throw new IllegalArgumentException("Email invalido");
         }
 
     }

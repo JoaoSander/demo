@@ -128,4 +128,9 @@ class StudentServiceTest {
         verify(studentRepository).deleteById(student.getId());
     }
 
+    @Test
+    void canUpdateStudent() {
+
+    }
+
 }
