@@ -48,9 +48,9 @@ public class StudentService {
 
         if (name!=null && name.length()>0) {
             student.setName(name);
-        } else {
-            throw new IllegalArgumentException("Nome invalido");
         }
+
+
 
         if (email!=null && email.length()>0) {
             Optional<Student> existsByEmail = studentRepository.findStudentByEmail(email);
@@ -59,9 +59,8 @@ public class StudentService {
             } else {
                 student.setEmail(email);
             }
-        } else {
-            throw new IllegalArgumentException("Email invalido");
         }
+
 
     }
 }

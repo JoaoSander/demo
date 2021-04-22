@@ -7,9 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
 import static java.time.Month.*;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
@@ -25,7 +23,6 @@ class StudentRepositoryTest {
 
     @Test
     void CheckIfStudentEmailExists() {
-
         //given
         Student student = new Student(
                 "Joao",
@@ -41,10 +38,8 @@ class StudentRepositoryTest {
         assertThat(expected.isPresent()).isTrue();
     }
 
-
-    /*@Test
-    void CheckIfStudentIdExists() {
-
+    @Test
+    void CheckIfStudentEmailDoesNotExists() {
         //given
         Student student = new Student(
                 "Joao",
@@ -53,12 +48,14 @@ class StudentRepositoryTest {
         );
         underTest.save(student);
 
-        //when
-        boolean expected = underTest.existsById(student.getId());
+        String email = "joaoFalse@hotmail.com";
 
-        //then
-        assertThat(expected).isTrue();
-    }*/
+        // when
+        Optional<Student> expected = underTest.findStudentByEmail(email);
+
+        // then
+        assertThat(expected.isPresent()).isFalse();
+    }
 
 
 }

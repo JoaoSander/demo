@@ -1,17 +1,11 @@
 package com.example.demo.student;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -19,7 +13,6 @@ import static java.time.Month.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -130,7 +123,22 @@ class StudentServiceTest {
 
     @Test
     void canUpdateStudent() {
+        //given
+        Student student = new Student(
+                "Joao",
+                "joao@gmail.com",
+                LocalDate.of(1999, MAY, 3)
+        );
+        studentRepository.save(student);
 
+        String email = "joaozinho@gmail.com";
+        String nome = "Joao";
+
+        given(studentRepository.findById(student.getId())).willReturn(Optional.of(student));
+
+        underTest.updateStudent(student.getId(), nome, email);
+
+        assertThat(student.getName()).isEqualTo(nome);
+        assertThat(student.getEmail()).isEqualTo(email);
     }
-
 }
