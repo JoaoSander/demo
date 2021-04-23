@@ -22,7 +22,7 @@ class StudentRepositoryTest {
     }
 
     @Test
-    void CheckIfStudentEmailExists() {
+    void checkIfStudentEmailExists() {
         //given
         Student student = new Student(
                 "Joao",
@@ -39,7 +39,7 @@ class StudentRepositoryTest {
     }
 
     @Test
-    void CheckIfStudentEmailDoesNotExists() {
+    void checkIfStudentEmailDoesNotExists() {
         //given
         Student student = new Student(
                 "Joao",
@@ -50,12 +50,45 @@ class StudentRepositoryTest {
 
         String email = "joaoFalse@hotmail.com";
 
-        // when
+        //when
         Optional<Student> expected = underTest.findStudentByEmail(email);
 
-        // then
+        //then
         assertThat(expected.isPresent()).isFalse();
     }
 
+    @Test
+    void checkIfStudentIdExists() {
+        //given
+        Student student = new Student(
+                "Joao",
+                "joao@gmail.com",
+                LocalDate.of(1999, MAY, 3)
+        );
+        underTest.save(student);
+
+        //when
+        boolean expected = underTest.existsById(student.getId());
+
+        //then
+        assertThat(expected).isTrue();
+    }
+
+    @Test
+    void checkIfStudentIdDoesNotExists() {
+        //given
+        Student student = new Student(
+                "Joao",
+                "joao@gmail.com",
+                LocalDate.of(1999, MAY, 3)
+        );
+        underTest.save(student);
+
+        //when
+        boolean expected = underTest.existsById(2l);
+
+        //then
+        assertThat(expected).isFalse();
+    }
 
 }
