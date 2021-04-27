@@ -1,10 +1,15 @@
-package com.example.demo.student;
+package com.example.demo.studentTest.serviceTest;
 
+import com.example.demo.student.model.Student;
+import com.example.demo.student.repository.StudentRepository;
+import com.example.demo.student.service.StudentService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
@@ -20,11 +25,18 @@ class StudentServiceTest {
 
     @Mock
     private StudentRepository studentRepository;
+    private AutoCloseable autoCloseable;
     private StudentService underTest;
 
     @BeforeEach
     void setUp() {
+        autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new StudentService(studentRepository);
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        autoCloseable.close();
     }
 
     @Test
@@ -34,6 +46,26 @@ class StudentServiceTest {
 
         //then
         verify(studentRepository).findAll();
+    }
+
+    @Test
+    void canGetStudentById() {
+        //given
+        Student student = new Student(
+                "Joao",
+                "joao@gmail.com",
+                LocalDate.of(1999, MAY, 3)
+        );
+        student.setId(1l);
+        underTest.addNewStudent(student);
+
+        //when
+        given(studentRepository.existsById(student.getId())).willReturn(true);
+
+        underTest.getStudentById(student.getId());
+
+        //then
+        verify(studentRepository).findById(1l);
     }
 
     @Test

@@ -1,5 +1,7 @@
-package com.example.demo.student;
+package com.example.demo.student.service;
 
+import com.example.demo.student.repository.StudentRepository;
+import com.example.demo.student.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,14 @@ public class StudentService {
 
     public List<Student> getStudents() {
         return studentRepository.findAll();
+    }
+
+    public Optional<Student> getStudentById(Long studentId) {
+        boolean exists = studentRepository.existsById(studentId);
+        if(!exists) {
+            throw new IllegalStateException("Student with ID " + studentId + " does not exists!");
+        }
+        return studentRepository.findById(studentId);
     }
 
     public void addNewStudent(Student student) {
@@ -49,12 +59,10 @@ public class StudentService {
             student.setName(name);
         }
 
-
-
         if (email!=null && email.length()>0) {
             Optional<Student> existsByEmail = studentRepository.findStudentByEmail(email);
             if (existsByEmail.isPresent()) {
-                throw new IllegalStateException("Email: " + email + " taken");
+                throw new IllegalStateException("Email: " +email+ " taken");
             } else {
                 student.setEmail(email);
             }
