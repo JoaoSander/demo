@@ -14,7 +14,7 @@ import static io.restassured.RestAssured.given;
 public class BasicAuthTest {
 
     @Test
-    public void BasicAuthenticationTest_whenStatusCode_200(){
+    public void whenCorrectUsernameAndPasswordShouldReturn200(){
         given().auth()
                 .basic("admin", "password")
                 .when()
@@ -25,9 +25,9 @@ public class BasicAuthTest {
     }
 
     @Test
-    public void BasicAuthenticationTest_whenStatusCode_401(){
+    public void whenWrongUsernameOrPasswordShouldReturn401(){
         given().auth()
-                .basic("", "")
+                .basic("admin", "passwor")
                 .when()
                 .get("http://localhost:8080/api/v1/student")
                 .then()
@@ -35,14 +35,4 @@ public class BasicAuthTest {
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
-    @Test
-    public void BasicAuthenticationTest_whenStatusCode_404(){
-        given().auth()
-                .basic("admin", "password")
-                .when()
-                .get("http://localhost:8080/api/v1/studentstudent")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.NOT_FOUND.value());
-    }
 }
