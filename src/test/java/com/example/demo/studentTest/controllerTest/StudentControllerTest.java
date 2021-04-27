@@ -1,4 +1,5 @@
-/*package com.example.demo.studentTest.controllerTest;
+/*
+package com.example.demo.studentTest.controllerTest;
 
 import com.example.demo.student.controller.StudentController;
 import com.example.demo.student.model.Student;
@@ -7,18 +8,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.RestDocsRestAssuredConfigurationCustomizer;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +21,6 @@ import java.util.List;
 import static java.time.Month.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.BDDAssumptions.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -36,7 +30,6 @@ class StudentControllerTest {
     String uri;
 
     public StudentControllerTest() {
-
     }
 
     @Autowired
@@ -96,4 +89,5 @@ class StudentControllerTest {
     @Disabled
     void updateStudent() {
     }
-}*/
+}
+*/

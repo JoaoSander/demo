@@ -49,23 +49,17 @@ class StudentServiceTest {
     }
 
     @Test
-    void canGetStudentById() {
-        //given
-        Student student = new Student(
-                "Joao",
-                "joao@gmail.com",
-                LocalDate.of(1999, MAY, 3)
-        );
-        student.setId(1l);
-        underTest.addNewStudent(student);
+    void getStudentById() {
+        // given
+        Student student = new Student();
+        studentRepository.save(student);
 
-        //when
-        given(studentRepository.existsById(student.getId())).willReturn(true);
-
+        // when
+        given(studentRepository.findById(student.getId())).willReturn(Optional.of(student));
         underTest.getStudentById(student.getId());
 
-        //then
-        verify(studentRepository).findById(1l);
+        // then
+        assertThat(studentRepository.findById(student.getId())).isEqualTo(Optional.of(student));
     }
 
     @Test
@@ -100,7 +94,7 @@ class StudentServiceTest {
 
         //when
         given(studentRepository.findById(student.getId())).willReturn(Optional.of(student));
-        given(studentRepository.findStudentByEmail(student.getEmail())).willReturn(Optional.of(student));
+        given(studentRepository.findByEmail(student.getEmail())).willReturn(Optional.of(student));
 
         //then
         assertThatThrownBy(() -> underTest.addNewStudent(student))
@@ -133,6 +127,10 @@ class StudentServiceTest {
         assertThatThrownBy(() -> underTest.updateStudent(student.getId(), student.getName(), student.getEmail()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("Student with ID " +student.getId()+ " does not exists");
+
+        assertThatThrownBy(() -> underTest.getStudentById(student.getId()))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Student with ID " + student.getId() + " does not exists");
     }
 
     @Test
