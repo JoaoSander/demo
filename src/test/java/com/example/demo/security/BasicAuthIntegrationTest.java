@@ -1,4 +1,4 @@
-package com.example.demo.basicAuthTest;
+package com.example.demo.security;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.given;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-public class BasicAuthTest {
+public class BasicAuthIntegrationTest {
 
     @Test
     public void whenCorrectUsernameAndPasswordShouldReturn200(){

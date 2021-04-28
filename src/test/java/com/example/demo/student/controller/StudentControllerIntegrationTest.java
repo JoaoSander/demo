@@ -1,4 +1,4 @@
-package com.example.demo.studentTest.controllerTest;
+package com.example.demo.student.controller;
 
 import com.example.demo.student.model.Student;
 import com.example.demo.student.service.StudentService;
@@ -28,7 +28,7 @@ import static java.time.Month.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-public class StudentControllerTest {
+public class StudentControllerIntegrationTest {
 
     @Mock
     private Student student, student1, student2;
