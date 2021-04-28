@@ -35,4 +35,15 @@ public class BasicAuthTest {
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
+    @Test
+    public void basicAuthenticationTestWhenStatusCode404(){
+        given().auth()
+                .basic("admin", "password")
+                .when()
+                .get("http://localhost:8080/api/v1/studentstudent")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+
 }
