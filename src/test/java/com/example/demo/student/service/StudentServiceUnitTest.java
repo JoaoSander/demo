@@ -169,4 +169,5 @@ class StudentServiceUnitTest {
         assertThat(student.getName()).isEqualTo(nome);
         assertThat(student.getEmail()).isEqualTo(email);
     }
+
 }

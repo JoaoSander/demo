@@ -276,4 +276,5 @@ public class StudentControllerIntegrationTest {
         Assertions.assertEquals(401, response.statusCode());
         Assertions.assertEquals("", response.getBody().asString());
     }
+
 }
