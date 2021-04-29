@@ -1,4 +1,4 @@
-package com.example.demo.student.service;
+package com.example.demo;
 
 import com.example.demo.student.repository.StudentRepository;
 import com.example.demo.student.model.Student;

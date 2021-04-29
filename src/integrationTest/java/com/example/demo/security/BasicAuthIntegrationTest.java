@@ -1,12 +1,12 @@
 package com.example.demo.security;
 
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import static io.restassured.RestAssured.given;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -15,7 +15,7 @@ public class BasicAuthIntegrationTest {
 
     @Test
     public void whenCorrectUsernameAndPasswordShouldReturn200(){
-        given().auth()
+        RestAssured.given().auth()
                 .basic("admin", "password")
                 .when()
                 .get("http://localhost:8080/api/v1/student")
@@ -26,7 +26,7 @@ public class BasicAuthIntegrationTest {
 
     @Test
     public void whenWrongUsernameOrPasswordShouldReturn401(){
-        given().auth()
+        RestAssured.given().auth()
                 .basic("admin", "passwor")
                 .when()
                 .get("http://localhost:8080/api/v1/student")
@@ -37,7 +37,7 @@ public class BasicAuthIntegrationTest {
 
     @Test
     public void basicAuthenticationTestWhenStatusCode404(){
-        given().auth()
+        RestAssured.given().auth()
                 .basic("admin", "password")
                 .when()
                 .get("http://localhost:8080/api/v1/studentstudent")

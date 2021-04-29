@@ -1,7 +1,8 @@
 package com.example.demo.student.controller;
 
 import com.example.demo.student.model.Student;
-import com.example.demo.student.service.StudentService;
+import com.example.demo.StudentService;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.json.JSONException;
@@ -21,8 +22,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import static io.restassured.RestAssured.baseURI;
-import static io.restassured.RestAssured.given;
 import static java.time.Month.*;
 
 @ExtendWith(SpringExtension.class)
@@ -52,7 +51,7 @@ public class StudentControllerIntegrationTest {
         studentList.add(student1);
         studentList.add(student2);
 
-        baseURI = "http://localhost:" + port + "/";
+        RestAssured.baseURI = "http://localhost:" + port + "/";
     }
 
     @MockBean
@@ -60,13 +59,13 @@ public class StudentControllerIntegrationTest {
 
     @Test
     public void anyMethodWhenPathIsIncorrectShouldReturnStatus404() {
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("admin","password")
                 .contentType(ContentType.JSON)
                 .when()
-                .get(baseURI + "api/v1/studentstudent")
+                .get(RestAssured.baseURI + "api/v1/studentstudent")
                 .then()
                 .extract()
                 .response();
@@ -78,13 +77,13 @@ public class StudentControllerIntegrationTest {
     public void getAllStudentsWhenUsernameAndPasswordAreCorrectShouldReturnStatus200() {
         Mockito.when(studentService.getStudents()).thenReturn(studentList);
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("admin","password")
                 .contentType(ContentType.JSON)
                 .when()
-                .get(baseURI + "api/v1/student/")
+                .get(RestAssured.baseURI + "api/v1/student/")
                 .then()
                 .extract()
                 .response();
@@ -96,13 +95,13 @@ public class StudentControllerIntegrationTest {
     public void getAllStudentsWhenUsernameAndPasswordAreIncorrectShouldReturnStatus401() {
         Mockito.when(studentService.getStudents()).thenReturn(studentList);
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("","")
                 .contentType(ContentType.JSON)
                 .when()
-                .get(baseURI + "api/v1/student/")
+                .get(RestAssured.baseURI + "api/v1/student/")
                 .then()
                 .extract()
                 .response();
@@ -114,13 +113,13 @@ public class StudentControllerIntegrationTest {
     public void getStudentByIdWhenUsernameAndPasswordAreCorrectShouldReturnStatus200() {
         Mockito.when(studentService.getStudentById(student.getId())).thenReturn(Optional.of(student));
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("admin","password")
                 .contentType(ContentType.JSON)
                 .when()
-                .get(baseURI + "api/v1/student/" + student.getId())
+                .get(RestAssured.baseURI + "api/v1/student/" + student.getId())
                 .then()
                 .extract()
                 .response();
@@ -132,13 +131,13 @@ public class StudentControllerIntegrationTest {
     public void getStudentByIdWhenUsernameAndPasswordAreIncorrectShouldReturnStatus401() {
         Mockito.when(studentService.getStudentById(student.getId())).thenReturn(Optional.of(student));
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("","")
                 .contentType(ContentType.JSON)
                 .when()
-                .get(baseURI + "api/v1/student/" + student.getId())
+                .get(RestAssured.baseURI + "api/v1/student/" + student.getId())
                 .then()
                 .extract()
                 .response();
@@ -157,7 +156,7 @@ public class StudentControllerIntegrationTest {
 
         Mockito.when(studentService.addNewStudent(student)).thenReturn(student);
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("admin","password")
@@ -184,7 +183,7 @@ public class StudentControllerIntegrationTest {
 
         Mockito.when(studentService.addNewStudent(student)).thenReturn(student);
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("","")
@@ -204,7 +203,7 @@ public class StudentControllerIntegrationTest {
     public void deleteStudentWhenUsernameAndPasswordAreCorrectShouldReturnStatus200() {
         Mockito.when(studentService.deleteStudent(student.getId())).thenReturn(student.getId());
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("admin","password")
@@ -224,7 +223,7 @@ public class StudentControllerIntegrationTest {
     public void deleteStudentWhenUsernameAndPasswordAreIncorrectShouldReturnStatus401() {
         Mockito.when(studentService.deleteStudent(student.getId())).thenReturn(student.getId());
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("","")
@@ -243,7 +242,7 @@ public class StudentControllerIntegrationTest {
     public void updateStudentWhenUsernameAndPasswordAreCorrectShouldReturnStatus200() {
         Mockito.when(studentService.updateStudent(student.getId(), student.getName(), student.getEmail())).thenReturn(studentList);
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("admin","password")
@@ -262,7 +261,7 @@ public class StudentControllerIntegrationTest {
     public void updateStudentWhenUsernameAndPasswordAreIncorrectShouldReturnStatus401() {
         Mockito.when(studentService.updateStudent(student.getId(), student.getName(), student.getEmail())).thenReturn(studentList);
 
-        Response response = given()
+        Response response = RestAssured.given()
                 .port(port)
                 .auth()
                 .basic("","")

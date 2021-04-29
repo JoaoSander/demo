@@ -1,6 +1,7 @@
 package com.example.demo.student.repository;
 
 import com.example.demo.student.model.Student;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 import java.util.Optional;
 import static java.time.Month.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 class StudentRepositoryIntegrationTest {
@@ -35,7 +35,7 @@ class StudentRepositoryIntegrationTest {
         Optional<Student> expected = underTest.findByEmail(student.getEmail());
 
         //then
-        assertThat(expected.isPresent()).isTrue();
+        AssertionsForClassTypes.assertThat(expected.isPresent()).isTrue();
     }
 
     @Test
@@ -54,7 +54,7 @@ class StudentRepositoryIntegrationTest {
         Optional<Student> expected = underTest.findByEmail(email);
 
         //then
-        assertThat(expected.isPresent()).isFalse();
+        AssertionsForClassTypes.assertThat(expected.isPresent()).isFalse();
     }
 
 }
