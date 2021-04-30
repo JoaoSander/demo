@@ -1,8 +1,8 @@
-package com.example.demo.student;
+package com.example.demo.student.service;
 
-import com.example.demo.StudentService;
 import com.example.demo.student.model.Student;
 import com.example.demo.student.repository.StudentRepository;
+import groovy.util.logging.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

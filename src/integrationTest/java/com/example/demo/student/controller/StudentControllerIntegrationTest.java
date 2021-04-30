@@ -1,7 +1,7 @@
 package com.example.demo.student.controller;
 
 import com.example.demo.student.model.Student;
-import com.example.demo.StudentService;
+import com.example.demo.student.service.StudentService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
